@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="Style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="hero-box">
+            <input type="text" placeholder="Enter city">
+            <button><i id="submit" class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <div class="image-box">
+            <img src="cloudy.png" alt="Weather Image" id="weather-icon">
+            <h1 class="temp">99°C</h1>
+            <p class="city">Bangalore</p>
+        </div>
+        <div class="box">
+            <div class="box-left">
+                <img src="weather.png" id="box-img" alt="Humidity Icon">
+                <div class="box-left-1">
+                    <h3 class="humidity">99</h3>
+                    <p>Humidity</p>
+                </div>
+            </div>
+            <div class="box-left">
+                <img src="weather.png" id="box-img" alt="Wind Icon">
+                <div class="box-left-1">
+                    <h3 class="wind">99</h3>
+                    <p>Wind</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = "8625508604fc46b3c55febef75b76a58";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+        const cityInput = document.querySelector(".hero-box input");
+        const searchBtn = document.querySelector("#submit");
+        const weatherIcon = document.querySelector('#weather-icon');
+
+        async function checkWeather(city) {
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+            const data = await response.json();
+            console.log(data);
+            document.querySelector(".city").innerText = data.name;
+            document.querySelector(".temp").innerText =Math.round(data.main.temp)+"°C";
+            document.querySelector(".humidity").innerText = data.main.humidity +"%";
+            document.querySelector(".wind").innerText = data.wind.speed; +"km/h"
+            if(data.weather[0].main == "clouds"){
+                weatherIcon.src = ''
+            }
+
+        }
+        searchBtn.addEventListener("click", () => {
+            checkWeather(cityInput.value);
+        });
+        
+    </script>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+</body>
+</html>
